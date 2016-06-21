@@ -1,0 +1,47 @@
+{
+    "name": "jdavidbakr/laravel-sns-error-notification",
+    "type": "library",
+    "description": "Sends a notification via SNS when there is an exception",
+    "keywords": [
+        "jdavidbakr",
+        "laravel-sns-error-notification"
+    ],
+    "homepage": "https://github.com/jdavidbakr/laravel-sns-error-notification",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "J David Baker",
+            "email": "me@jdavidbaker.com",
+            "homepage": "http://www.jdavidbaker.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.1",
+        "php" : "~5.5|~7.0",
+        "aws/aws-sdk-php-laravel": "~3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "~4.0||~5.0",
+        "scrutinizer/ocular": "~1.1",
+        "squizlabs/php_codesniffer": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "jdavidbakr\\LaravelSNSErrorNotification\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "jdavidbakr\\LaravelSNSErrorNotification\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
