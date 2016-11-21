@@ -1,10 +1,10 @@
 <?php
 
-use Monolog\Logger;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Container\Container as Logger;
 
 class ErrorNotifierTest extends TestCase
 {

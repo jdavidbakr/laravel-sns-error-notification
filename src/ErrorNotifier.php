@@ -20,16 +20,12 @@ class ErrorNotifier extends ExceptionHandler {
 	 */
 	public function report(Exception $e)
 	{
-        $no_report = [
-            404, // Not found
-            503, // Temporarily unavailable
-        ];
-        if ($this->isHttpException($e)) {
-            $status_code = $e->getStatusCode();
-        } else {
-            $status_code = $e->getCode();
-        }
-        if(!config('app.debug') && !in_array($status_code, $no_report)) {
+        if(!config('app.debug') && $this->shouldReport($e)) {
+            if ($this->isHttpException($e)) {
+                $status_code = $e->getStatusCode();
+            } else {
+                $status_code = $e->getCode();
+            }
             Cache::remember('suppress-error-notification:'.$status_code.':'.$e->getFile().':'.$e->getLine(),
                 Carbon::now()->addHours(config('sns-error-notification.cache-hours')),
                 function() use($e, $status_code) {
