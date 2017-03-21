@@ -63,6 +63,9 @@ class ErrorNotifier extends ExceptionHandler {
                         'request'=>request()->all(),
                         'trace'=>$this->getTrace($e),
                     ]);
+                if(config('sns-error-notification.max-log-age')) {
+                    AppErrorLog::where('created_at','<',Carbon::now()->subDays(config('sns-error-notification.max-log-age')))->delete();
+                }
             }
         }
         return parent::report($e);

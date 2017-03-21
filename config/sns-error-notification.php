@@ -7,7 +7,7 @@ return [
 	'save-to-db'=>true,
 
 	/**
-	 * Maximum age for logs in the database, measured in days
+	 * Maximum age for logs in the database, measured in days.  Set to 0 to never expire.
 	 */
 	'max-log-age'=>60,
 
