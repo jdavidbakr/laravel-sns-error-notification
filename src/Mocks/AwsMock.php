@@ -4,7 +4,7 @@ namespace jdavidbakr\LaravelSNSErrorNotification\Mocks;
 
 class AwsMock {
 
-	protected $lastPublish = [];
+	public $lastPublish = [];
 
 	public function createClient()
 	{

@@ -11,6 +11,16 @@ use jdavidbakr\LaravelSNSErrorNotification\Mocks\AwsMock;
 
 class ErrorNotifierTest extends Orchestra\Testbench\TestCase
 {
+    /**
+     * Setup the test environment.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->artisan('migrate', ['--database' => 'testing']);
+    }
+
     protected function getPackageProviders($app)
     {
         return [
@@ -27,10 +37,7 @@ class ErrorNotifierTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * A basic test example.
-     *
-     * @return void
-     * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
+     * @test
      */
     public function testReport()
     {
@@ -39,8 +46,27 @@ class ErrorNotifierTest extends Orchestra\Testbench\TestCase
             return $mock;
         });
     	\Config::set('app.debug', false);
+        \Config::set('sns-error-notification.notification-subject','Test Subject');
+        \Config::set('sns-error-notification.sns-topic','Topic:Arn');
+        \Config::set('sns-error-notification.save-to-db',true);
     	$handler = new Notifier(new Logger('foo'));
-    	$exception = new HttpException(500, 'Test exception', null, [], 500);
-    	$handler->report($exception);
+        $message = str_random(32);
+        $status = rand(100,600);
+    	$exception = new HttpException($status, $message, null, [], 500);
+        try {
+            $handler->report($exception);
+        } catch(HttpException $e) {
+            // Ignore the exception we just created so we can test to make sure we sent the message
+        }
+        $data = $mock->lastPublish;
+        $this->assertRegexp("/Message: {$message}/", $data['Message']);
+        $this->assertRegexp("/Error Code: {$status}/", $data['Message']);
+        $this->assertEquals('Test Subject', $data['Subject']);
+        $this->assertEquals('Topic:Arn', $data['TopicArn']);
+
+        $this->assertDatabaseHas('app_error_logs',[
+                'message'=>$message,
+                'error_code'=>$status,
+            ]);
     }
 }

@@ -6,6 +6,8 @@
 
 This package is a simple extension of the Laravel Exception Handler that sends a notification via AWS SNS whenever there is an error, with helpful information like the URL that was called and the stack trace.  The notification is cached so that it only sends one notice per unique error message every 24 hours, and only fires if the application is not in debug mode (so you aren't innundated with error messages while working on your project).
 
+You can also enable writing to a database table, with automatic purging after a certain timeframe.
+
 ## Install
 
 Via Composer
@@ -39,6 +41,14 @@ php artisan vendor:publish
 ```
 
 This inserts a config file at config/sns-error-notification.php.  You must set the SNS topic and subject in there.  Also note that you will need to configure the config/aws.php file as needed to give access to the SNS topic.
+
+Install the migrations
+
+```
+php artisan migrate
+```
+
+This installs the tables needed to store the exceptions in the database.
 
 ## Usage
 

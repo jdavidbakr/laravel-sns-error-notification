@@ -16,6 +16,7 @@ class LaravelSNSErrorNotificationServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/sns-error-notification.php' => config_path('sns-error-notification.php')
         ], 'config');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
